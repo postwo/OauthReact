@@ -21,3 +21,19 @@ reportWebVitals();
 
 
 
+# rfc
+이거는 vs에서 다움 가능  =>   VS Code ES7+ React/Redux/React-Native/JS snippets
+
+
+import React from 'react'
+
+export default function ClassComponent() {
+return (
+<div>ClassComponent</div>
+)
+}
+
+# react 실행
+npm run start
+
+서타몽3부터 듣기 
