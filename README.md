@@ -36,4 +36,3 @@ return (
 # react 실행
 npm run start
 
-서타몽3부터 듣기 

@@ -1,20 +1,37 @@
-import {forwardRef} from "react";
+import { ChangeEvent, KeyboardEvent, forwardRef} from "react";
 import './style.css'; //css가지고 오기
 
-interface Props{
 
+interface Props { //타입을 지정
+    title: string;
+    placeholder: string;
+    type: 'text' | 'password';
+    value: string;
+    isErrorMessage?: boolean;
+    buttonTitle?: string;  //?는 와도 되고 안와도 된다는 뜻이다
+    message?:String;
+    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    onKeydown?: (event: KeyboardEvent<HTMLInputElement>) => void;
+    onButtonClick?: () => void;
 }
 
 const InputBox = forwardRef<HTMLInputElement,Props>((props: Props,ref)=>{
+
+    const { title, placeholder, type, value, isErrorMessage, buttonTitle,message, onChange, onKeydown, onButtonClick } = props;
+
+   const buttonClass = value  === '' ? 'input-box-button-disable' : 'input-box-button';
+   const messageClass = isErrorMessage ? 'input-box-message-error': 'input-box-message';
+
     return (
         <div className='input-box'>
-            <div className='input-box-title'>{'아이디'}</div>
+            <div className='input-box-title'>{title}</div>
             <div className='input-box-content'>
                 <div className='input-box-body'>
-                    <input className='input-box-input' placeholder='아이디를 입력해주세요'/>
-                    <div className='input-box-button-disable'>{'중복확인'}</div>
+                    <input ref={ref} className='input-box-input' placeholder={placeholder} type={type} value={value} onChange={onChange} onKeyDown={onKeydown}/>
+                    {buttonTitle !== undefined && onButtonClick !== undefined && <div className={buttonClass} onClick={onButtonClick}>{'중복확인'}</div>}
                 </div>
-                <div className='input-box-message-error'>{'사용 가능한 아이디 입니다.'}</div>
+                {message !== undefined && <div className={messageClass}>{message}</div>}
+
             </div>
         </div>
     );
