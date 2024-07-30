@@ -51,7 +51,7 @@ public class JwtProvider {
 
         }catch (Exception exception){
             exception.printStackTrace();
-            return null;
+            return null; //실패하면 null
         }
 
         return subject;
