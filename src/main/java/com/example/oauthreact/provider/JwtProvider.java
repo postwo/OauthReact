@@ -1,5 +1,6 @@
 package com.example.oauthreact.provider;
 
+import com.nimbusds.jwt.JWT;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,32 +23,35 @@ public class JwtProvider {
     //jwt 생성 메소드
     public String create(String userId) {
 
+        //현재 시간으로부터 1시간 후를 만료 시간으로 설정
         Date expiredDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));//추가한 날짜 , //1시간    //만료기간
 
+        //주입받은 비밀 키를 사용하여 HMAC SHA 알고리즘용 키 객체를 생성
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));// 시크릿키를 만든다
 
         String jwt = Jwts.builder()
-                .signWith(key, SignatureAlgorithm.HS256)
-                .setSubject(userId).setIssuedAt(new Date()).setExpiration(expiredDate)
-                .compact();
+                .signWith(key, SignatureAlgorithm.HS256) //위에서 생성한 키와 HS256 알고리즘을 사용하여 JWT를 서명
+                .setSubject(userId) //JWT의 subject(주제) 필드에 사용자 ID를 설정
+                .setIssuedAt(new Date()).setExpiration(expiredDate)  //JWT가 발행된 시간을 현재 시간으로 설정
+                .compact(); //JWT 문자열을 생성
         return jwt;
 
     }
 
 
     //jwt 검증
-    public String Validate(String jwt){
+    public String Validate(String jwt){//주어진 JWT를 검증하고, 유효한 경우 해당 JWT의 subject를 반환하는 메소드
 
        String subject = null;
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
         try{
             subject = Jwts.parserBuilder()
-                    .setSigningKey(key)
+                    .setSigningKey(key) // JWT의 서명을 검증하기 위한 키를 설정
                     .build()
-                    .parseClaimsJws(jwt)
+                    .parseClaimsJws(jwt) //주어진 JWT를 파싱하고 서명을 검증
                     .getBody()
-                    .getSubject();
+                    .getSubject(); //JWT의 페이로드에서 subject를 추출하여 변수에 저장
 
         }catch (Exception exception){
             exception.printStackTrace();
