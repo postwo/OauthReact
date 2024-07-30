@@ -27,7 +27,7 @@ public class ResponseDto {
 
 
     //검증 에러
-    public static ResponseEntity<ResponseDto> validation(){
+    public static ResponseEntity<ResponseDto> validationFail(){
         ResponseDto responseBody = new ResponseDto(ResponseCode.VALIDATION_FAIL,ResponseMessage.VALIDATION_FAIL);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
