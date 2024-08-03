@@ -1,7 +1,5 @@
 package com.example.oauthreact.provider;
 
-import com.nimbusds.jwt.JWT;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -17,7 +15,7 @@ import java.util.Date;
 @Component
 public class JwtProvider {
 
-    @Value("${secret-key}") //yml파일에 있는 키값을 가지고 온다
+    @Value("${spring.jwt.secret-key}") //yml파일에 있는 키값을 가지고 온다
     private String secretKey;
 
     //jwt 생성 메소드

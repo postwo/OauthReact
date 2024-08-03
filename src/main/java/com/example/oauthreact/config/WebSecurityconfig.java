@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,7 +22,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
 
-@Configurable
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -50,9 +48,10 @@ public class WebSecurityconfig {
                         .requestMatchers("/api/v1/user/**").hasRole("USER")
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
 //                        .requestMatchers("/api/v1/logispw/**").hasAnyRole("USER","ADMIN")
-                        .anyRequest()
+                        .anyRequest().authenticated()
                 )
-                //authorizeHttpRequests 에서 발생한 exception이발생 한거를 처리
+
+                //authorizeHttpRequests 에서 발생한 exception 이발생 한걸 처리
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(new FailedAuthenticationEntryPoint()) //인스턴스를 넘겨준다
                 )

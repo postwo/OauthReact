@@ -13,7 +13,8 @@ public class ResponseDto {
 
     private String code;
     private String message;
-    
+
+    //기본생성자
     public ResponseDto(){
         this.code = ResponseCode.SUCCESS;
         this.message = ResponseMessage.SUCCESS;
