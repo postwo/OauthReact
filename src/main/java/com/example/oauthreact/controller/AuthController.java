@@ -1,6 +1,8 @@
 package com.example.oauthreact.controller;
 
+import com.example.oauthreact.dto.request.auth.EmailCertificationRequestDto;
 import com.example.oauthreact.dto.request.auth.IdCheckRequestDto;
+import com.example.oauthreact.dto.response.auth.EmailCertificationReponseDto;
 import com.example.oauthreact.dto.response.auth.IdCheckResponseDto;
 import com.example.oauthreact.service.AuthService;
 import jakarta.validation.Valid;
@@ -21,6 +23,14 @@ public class AuthController {
     @PostMapping("/id-check")
     public ResponseEntity<? super IdCheckResponseDto> idCheck (@RequestBody @Valid IdCheckRequestDto requsetbody){
         ResponseEntity<? super IdCheckResponseDto> response = authService.idCheck(requsetbody);
+        return response;
+    }
+
+    @PostMapping("/email-certification")
+    public ResponseEntity<? super EmailCertificationReponseDto> emailCertification (
+            @RequestBody @Valid EmailCertificationRequestDto requestbody
+    ){
+        ResponseEntity<? super EmailCertificationReponseDto> response = authService.emailCertification(requestbody);
         return response;
     }
 

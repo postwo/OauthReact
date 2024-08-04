@@ -7,6 +7,7 @@ enum ResponseCode{
     SIGN_IN_FAIL = "SF",
     CERTIFICATION_FAIL = "cf",
 
+    MAIL_FAIL = "MF",
     DATABASE_ERROR = "DBE"
 };
 

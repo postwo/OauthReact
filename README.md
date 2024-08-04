@@ -22,7 +22,7 @@ reportWebVitals();
 
 
 # rfc
-이거는 vs에서 다움 가능  =>   VS Code ES7+ React/Redux/React-Native/JS snippets
+이거는 vs에서 다운 가능  =>   VS Code ES7+ React/Redux/React-Native/JS snippets
 
 
 import React from 'react'
@@ -36,4 +36,4 @@ return (
 # react 실행
 npm run start
 
-# JWT 11.2 사용 
+# JWT 11.2 사용
