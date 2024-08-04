@@ -1,7 +1,9 @@
 package com.example.oauthreact.controller;
 
+import com.example.oauthreact.dto.request.auth.CheckCertificationRequestDto;
 import com.example.oauthreact.dto.request.auth.EmailCertificationRequestDto;
 import com.example.oauthreact.dto.request.auth.IdCheckRequestDto;
+import com.example.oauthreact.dto.response.auth.CheckCertificationResponseDto;
 import com.example.oauthreact.dto.response.auth.EmailCertificationReponseDto;
 import com.example.oauthreact.dto.response.auth.IdCheckResponseDto;
 import com.example.oauthreact.service.AuthService;
@@ -31,6 +33,15 @@ public class AuthController {
             @RequestBody @Valid EmailCertificationRequestDto requestbody
     ){
         ResponseEntity<? super EmailCertificationReponseDto> response = authService.emailCertification(requestbody);
+        return response;
+    }
+
+
+    @PostMapping("/check-certification")
+    public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(
+            @RequestBody @Valid CheckCertificationRequestDto requestbody
+    ){
+        ResponseEntity<? super CheckCertificationResponseDto> response = authService.checkCertification(requestbody);
         return response;
     }
 

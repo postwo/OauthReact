@@ -1,9 +1,11 @@
 package com.example.oauthreact.service.implement;
 
 import com.example.oauthreact.common.CertificationNumber;
+import com.example.oauthreact.dto.request.auth.CheckCertificationRequestDto;
 import com.example.oauthreact.dto.request.auth.EmailCertificationRequestDto;
 import com.example.oauthreact.dto.request.auth.IdCheckRequestDto;
 import com.example.oauthreact.dto.response.ResponseDto;
+import com.example.oauthreact.dto.response.auth.CheckCertificationResponseDto;
 import com.example.oauthreact.dto.response.auth.EmailCertificationReponseDto;
 import com.example.oauthreact.dto.response.auth.IdCheckResponseDto;
 import com.example.oauthreact.entity.CertificationEntity;
@@ -67,5 +69,29 @@ public class AuthServiceImplement implements AuthService {
 
         return EmailCertificationReponseDto.success();
     }
+
+    @Override
+    public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(CheckCertificationRequestDto dto) {
+        try{
+
+            String userId = dto.getId();
+            String email = dto.getEmail();
+            String certificationNumber = dto.getCertificationNumber();
+
+            CertificationEntity certificationEntity = certificationRepository.findByUserId(userId);
+
+            if (certificationEntity == null) return CheckCertificationResponseDto.certificationFail();
+
+            boolean isMatched = certificationEntity.getEmail().equals(email) && certificationEntity.getCertificationNumber().equals(certificationNumber);
+            if (!isMatched) return CheckCertificationResponseDto.certificationFail(); //false일경우
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return CheckCertificationResponseDto.success();
+    }
+
 
 }
