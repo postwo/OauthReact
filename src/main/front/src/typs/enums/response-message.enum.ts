@@ -1,6 +1,6 @@
 enum ResponseMessage{
 
-     SUCCESS = "success",
+ SUCCESS = "success",
 
  VALIDATION_FAIL = "validation failed",
 

@@ -37,3 +37,10 @@ return (
 npm run start
 
 # JWT 11.2 사용
+
+
+# requestdto
+클라이언트가 서버에 요청을 보낼 때 필요한 데이터
+
+# responsedto
+서버가 클라이언트에 응답할 때 필요한 데이터와 정보

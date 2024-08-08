@@ -1,6 +1,12 @@
-import React, {ChangeEvent, ChangeEventHandler, useRef, useState,KeyboardEvent} from 'react'
+import React, {ChangeEvent, KeyboardEvent, useRef, useState} from 'react'
 import InputBox from "../../../components/inputBox";
 import './style.css';
+import {useNavigate} from "react-router-dom";
+import {EmailCertificationRequestDto, IdCheckRequestDto} from "../../../apis/requset/auth";
+import {emailCertificationRequest, idCheckRequest} from "../../../apis";
+import {EmailCertificationResponseDto, IdCheckResponseDto} from "../../../apis/response/auth";
+import {ResponseDto} from "../../../apis/response";
+import {ResponseCode} from "../../../typs/enums";
 
 export default function SignUp() {
 
@@ -31,13 +37,58 @@ export default function SignUp() {
     const [emailMessage, setEmailMessage] = useState<string>('');
     const [certificationNumberMessage, setCertificationNumberMessage] = useState<string>('');
 
+    const [isIdCheck, setIdCheck] = useState<boolean>(false);
+
     const signUpButtonClass = id && password && passwordCheck && email && certificationNumber ?
     'primary-button-lg' : 'disable-button-lg';
+
+    const emailPattern = /^[a-zA-Z0-9]*@([-.]?[a-zA-z0-9])*\.[a-zA-Z]{2,4}$/;
+
+    const navigate = useNavigate();
+
+    const idCheckResponse = (responseBody: IdCheckResponseDto | ResponseDto | null) => {
+      if (!responseBody) return ;
+      const {code} = responseBody;
+      if (code == ResponseCode.VALIDATION_FAIL) alert('아이디를 입력하세요');
+      if (code == ResponseCode.DUPLICATE_ID){
+          setIdError(true);
+          setIdMessage('이미 사용중인 아이디입니다');
+          setIdCheck(false);
+      }
+      if(code == ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류 입니다');
+      if (code !== ResponseCode.SUCCESS) return;
+
+      setIdError(false);
+      setIdMessage('사용 가능한 아이디입니다');
+      setIdCheck(true);
+
+    };
+
+
+    const emailCertificationResponse = (responseBody: EmailCertificationResponseDto | ResponseDto | null) => {
+      if (!responseBody) return;
+      const {code} = responseBody;
+      if (code === ResponseCode.VALIDATION_FAIL) alert('아이디와 이메일을 모두 입력하세요');
+        if (code == ResponseCode.DUPLICATE_ID){
+            setIdError(true);
+            setIdMessage('이미 사용중인 아이디입니다');
+            setIdCheck(false);
+        }
+        if (code === ResponseCode.MAIL_FAIL) alert('이메일 전송에 실패했습니다.');
+        if(code == ResponseCode.DATABASE_ERROR) alert('데이터베이스 오류 입니다');
+        if (code !== ResponseCode.SUCCESS) return;
+
+        setEmailError(false);
+        setEmailMessage('인증번호가 전송되었습니다.');
+
+    };
+
 
     const onIdChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setId(value);
         setIdMessage('');
+        setIdCheck(false);
     };
     const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
@@ -63,14 +114,33 @@ export default function SignUp() {
 
 
     const onIdButtonClickHandler = () => {
+        if (!id) return ;
+        const requestBody: IdCheckRequestDto ={id};
 
-    }
+        idCheckRequest(requestBody).then(idCheckResponse);
+    };
     const onEmailButtonClickHandler = () => {
+        if (!id && !email) return;
 
-    }
+        const checkedEmail = emailPattern.test(email);
+        if (!checkedEmail) {
+            setEmailError(true);
+            setEmailMessage('이메일 형식이 아닙니다');
+            return;
+        }
+
+        const requestbody: EmailCertificationRequestDto = { id,email};
+        emailCertificationRequest(requestbody).then(emailCertificationResponse);
+    };
     const onCertificationNumberButtonClickHandler = () => {
 
-    }
+    };
+    const onSignUpButtonClickHandler = () => {
+
+    };
+    const onSignInButtonClickHandler = () => {
+        navigate('/auth/sign-in') //버튼 클릭시 url 변경
+    };
 
 
 
@@ -123,8 +193,8 @@ export default function SignUp() {
                             <InputBox ref={certificationNumberRef} title='인증번호' placeholder='인증번호 4자리를 입력해주세요' type='text' value={certificationNumber} onChange={onCertificationNumberChangeHandler} isErrorMessage={isCertificationNumberError} message={certificationNumberMessage} buttonTitle='이메일 인증 확인' onButtonClick={onCertificationNumberButtonClickHandler} onKeydown={onCertificationNumberKeyDownHandler}/>
                         </div>
                         <div className='sign-up-content-button-box'>
-                            <div className={`${signUpButtonClass} full-width`}>{'회원가입'}</div>
-                            <div className='text-link-lg full-width'>{'로그인'}</div>
+                            <div className={`${signUpButtonClass} full-width`} onClick={onSignUpButtonClickHandler}>{'회원가입'}</div>
+                            <div className='text-link-lg full-width' onClick={onSignInButtonClickHandler}>{'로그인'}</div>
                         </div>
                     </div>
                 </div>

@@ -9,7 +9,7 @@ interface Props { //타입을 지정
     value: string;
     isErrorMessage?: boolean;
     buttonTitle?: string;  //?는 와도 되고 안와도 된다는 뜻이다
-    message?:String;
+    message?:string;
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     onKeydown?: (event: KeyboardEvent<HTMLInputElement>) => void;
     onButtonClick?: () => void;
@@ -28,7 +28,7 @@ const InputBox = forwardRef<HTMLInputElement,Props>((props: Props,ref)=>{
             <div className='input-box-content'>
                 <div className='input-box-body'>
                     <input ref={ref} className='input-box-input' placeholder={placeholder} type={type} value={value} onChange={onChange} onKeyDown={onKeydown}/>
-                    {buttonTitle !== undefined && onButtonClick !== undefined && <div className={buttonClass} onClick={onButtonClick}>{'중복확인'}</div>}
+                    {buttonTitle !== undefined && onButtonClick !== undefined && <div className={buttonClass} onClick={onButtonClick}>{buttonTitle}</div>}
                 </div>
                 {message !== undefined && <div className={messageClass}>{message}</div>}
 
