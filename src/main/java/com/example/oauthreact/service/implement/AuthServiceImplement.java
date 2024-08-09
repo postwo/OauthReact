@@ -17,6 +17,7 @@ import com.example.oauthreact.repository.CertificationRepository;
 import com.example.oauthreact.repository.UserRepository;
 import com.example.oauthreact.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImplement implements AuthService {
 
     private final UserRepository userRepository;
@@ -54,16 +56,17 @@ public class AuthServiceImplement implements AuthService {
     @Override
     public ResponseEntity<? super EmailCertificationReponseDto> emailCertification(EmailCertificationRequestDto dto) {
         try{
-
             String userId = dto.getId();
             String email = dto.getEmail();
 
             boolean isExistId = userRepository.existsById(userId);
             if (isExistId) return EmailCertificationReponseDto.duplicateId();
 
+
             String certificationNumber = CertificationNumber.getCertificationNumber(); //0~9 사이에 수 를 받아온다
 
             boolean isSuccessed = emailProvider.sendCertificationMail(email,certificationNumber);
+
             if (!isSuccessed) return EmailCertificationReponseDto.mailsendFail(); //false 일 경우
 
             CertificationEntity certificationEntity = new CertificationEntity(userId,email,certificationNumber);

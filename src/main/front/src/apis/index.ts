@@ -18,7 +18,7 @@ const DOMAIN = 'http://localhost:4040';
 const API_DOMAIN = `${DOMAIN}/api/v1`;
 
 const ID_CHECK_URL = () => `${API_DOMAIN}/auth/id-check`;
-const EMAIL_CERTIFICATION_URL = () =>`${API_DOMAIN}/auth/id-email-certification`;
+const EMAIL_CERTIFICATION_URL = () =>`${API_DOMAIN}/auth/email-certification`;
 
 export const idCheckRequest = async (requestBody: IdCheckRequestDto) => {
     const result = await axios.post(ID_CHECK_URL(),requestBody)

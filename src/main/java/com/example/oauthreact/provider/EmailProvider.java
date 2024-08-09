@@ -2,12 +2,14 @@ package com.example.oauthreact.provider;
 
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class EmailProvider {
 
     private final JavaMailSender javaMailSender;
@@ -15,6 +17,7 @@ public class EmailProvider {
 
     public boolean sendCertificationMail(String email, String certificationNumber){
         try {
+
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(message,true);
 
@@ -28,6 +31,7 @@ public class EmailProvider {
 
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("메일 전송 실패: {}", e.getMessage());
             return false;
         }
 

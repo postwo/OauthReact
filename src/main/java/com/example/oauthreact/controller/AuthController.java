@@ -11,6 +11,7 @@ import com.example.oauthreact.dto.response.auth.SignupResponseDto;
 import com.example.oauthreact.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
     private final AuthService authService;
@@ -34,7 +36,10 @@ public class AuthController {
     public ResponseEntity<? super EmailCertificationReponseDto> emailCertification (
             @RequestBody @Valid EmailCertificationRequestDto requestbody
     ){
+        log.info("나 왔어요");
         ResponseEntity<? super EmailCertificationReponseDto> response = authService.emailCertification(requestbody);
+        log.info("======"+response);
+        log.info("지금메일 보냈어요");
         return response;
     }
 

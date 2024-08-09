@@ -44,3 +44,6 @@ npm run start
 
 # responsedto
 서버가 클라이언트에 응답할 때 필요한 데이터와 정보
+
+# 구글 gmail 
+앱 비밀번호 조회해서 들어가기

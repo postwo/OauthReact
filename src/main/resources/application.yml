@@ -10,11 +10,11 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop #create update none
+      ddl-auto: create-drop # create update none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
-  # jwt secrey key
+  # JWT secret key
   jwt:
     secret-key: ${key}
 
@@ -22,11 +22,11 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${GMailId}
-    password: ${AppPassword}
+    username: ${Gmail}
+    password: ${GPassword}
     properties:
       mail:
         smtp:
           auth: true
           starttls:
-            enable: true  # STARTTLS 활성화하여 암호화된 연결을 사용
+            enable: true # STARTTLS 활성화하여 암호화된 연결을 사용
