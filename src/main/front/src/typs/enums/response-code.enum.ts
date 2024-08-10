@@ -5,7 +5,7 @@ enum ResponseCode{
     DUPLICATE_ID = "DI",
 
     SIGN_IN_FAIL = "SF",
-    CERTIFICATION_FAIL = "cf",
+    CERTIFICATION_FAIL = "CF",
 
     MAIL_FAIL = "MF",
     DATABASE_ERROR = "DBE"
