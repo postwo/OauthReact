@@ -7,6 +7,7 @@ import {emailCertificationRequest, idCheckRequest} from "../../../apis";
 import {EmailCertificationResponseDto, IdCheckResponseDto} from "../../../apis/response/auth";
 import {ResponseDto} from "../../../apis/response";
 import {ResponseCode} from "../../../typs/enums";
+import {ResponseBody} from "../../../typs";
 
 export default function SignUp() {
 
@@ -46,7 +47,7 @@ export default function SignUp() {
 
     const navigate = useNavigate();
 
-    const idCheckResponse = (responseBody: IdCheckResponseDto | ResponseDto | null) => {
+    const idCheckResponse = (responseBody: ResponseBody<IdCheckResponseDto>) => {
       if (!responseBody) return ;
       const {code} = responseBody;
       if (code == ResponseCode.VALIDATION_FAIL) alert('아이디를 입력하세요');
@@ -65,7 +66,7 @@ export default function SignUp() {
     };
 
 
-    const emailCertificationResponse = (responseBody: EmailCertificationResponseDto | ResponseDto | null) => {
+    const emailCertificationResponse = (responseBody: ResponseBody<EmailCertificationResponseDto>) => {
       if (!responseBody) return;
       const {code} = responseBody;
       if (code === ResponseCode.VALIDATION_FAIL) alert('아이디와 이메일을 모두 입력하세요');
