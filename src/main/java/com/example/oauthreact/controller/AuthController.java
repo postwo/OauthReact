@@ -36,10 +36,7 @@ public class AuthController {
     public ResponseEntity<? super EmailCertificationReponseDto> emailCertification (
             @RequestBody @Valid EmailCertificationRequestDto requestbody
     ){
-        log.info("나 왔어요");
         ResponseEntity<? super EmailCertificationReponseDto> response = authService.emailCertification(requestbody);
-        log.info("======"+response);
-        log.info("지금메일 보냈어요");
         return response;
     }
 
@@ -48,6 +45,7 @@ public class AuthController {
     public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(
             @RequestBody @Valid CheckCertificationRequestDto requestbody
     ){
+        //서버는 문제가 없다 react 단에서 문제다 = 인증번호 틀릴시 메시지 띄우는게 문제
         ResponseEntity<? super CheckCertificationResponseDto> response = authService.checkCertification(requestbody);
         return response;
     }

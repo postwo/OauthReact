@@ -70,6 +70,7 @@ public class AuthServiceImplement implements AuthService {
             if (!isSuccessed) return EmailCertificationReponseDto.mailsendFail(); //false 일 경우
 
             CertificationEntity certificationEntity = new CertificationEntity(userId,email,certificationNumber);
+            log.info("===>"+certificationEntity);
             certificationRepository.save(certificationEntity);
 
         }catch (Exception exception){
@@ -83,17 +84,19 @@ public class AuthServiceImplement implements AuthService {
     @Override
     public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(CheckCertificationRequestDto dto) {
         try{
-
             String userId = dto.getId();
             String email = dto.getEmail();
             String certificationNumber = dto.getCertificationNumber();
 
             CertificationEntity certificationEntity = certificationRepository.findByUserId(userId);
-
             if (certificationEntity == null) return CheckCertificationResponseDto.certificationFail();
 
-            boolean isMatched = certificationEntity.getEmail().equals(email) && certificationEntity.getCertificationNumber().equals(certificationNumber);
-            if (!isMatched) return CheckCertificationResponseDto.certificationFail(); //false일경우
+            // 문자열 공백 제거
+            String trimmedCertificationNumber = certificationNumber.trim();
+            String trimmedEntityCertificationNumber = certificationEntity.getCertificationNumber().trim();
+
+            boolean isMatched = certificationEntity.getEmail().equals(email) && trimmedEntityCertificationNumber.equals(trimmedCertificationNumber);
+            if (!isMatched) return  CheckCertificationResponseDto.certificationFail();//false일경우
 
         }catch (Exception exception){
             exception.printStackTrace();
