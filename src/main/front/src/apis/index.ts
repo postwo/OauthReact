@@ -1,14 +1,14 @@
 import {
     CheckCertificationRequestDto,
     EmailCertificationRequestDto,
-    IdCheckRequestDto,
+    IdCheckRequestDto, SignInRequestDto,
     SignUpRequestDto
 } from "./requset/auth";
 import axios, {AxiosResponse} from "axios";
 import {
     CheckCertificationResponseDto,
     EmailCertificationResponseDto,
-    IdCheckResponseDto,
+    IdCheckResponseDto, SignInResponseDto,
     SignUpResponseDto
 } from "./response/auth";
 import {ResponseDto} from "./response";
@@ -32,6 +32,15 @@ const ID_CHECK_URL = () => `${API_DOMAIN}/auth/id-check`;
 const EMAIL_CERTIFICATION_URL = () =>`${API_DOMAIN}/auth/email-certification`;
 const CHECK_CERTIFICATION_URL = () =>`${API_DOMAIN}/auth/check-certification`;
 const SIGN_UP_URL = ()=> `${API_DOMAIN}/auth/sign-up`;
+
+const SIGN_IN_URL = () => `${API_DOMAIN}/auth/sign-in`;
+
+    export const signInRequest = async (requestBody: SignInRequestDto)=>{
+        const result =await axios.post(SIGN_IN_URL(),requestBody)
+            .then(responseHandler<SignInResponseDto>)
+            .catch(errorHandler);
+        return result;
+    };
 
     export const signUpRequest = async (requestBody: SignUpRequestDto) =>{
         const result =await axios.post(SIGN_UP_URL(),requestBody)
