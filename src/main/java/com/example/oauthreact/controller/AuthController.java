@@ -1,13 +1,7 @@
 package com.example.oauthreact.controller;
 
-import com.example.oauthreact.dto.request.auth.CheckCertificationRequestDto;
-import com.example.oauthreact.dto.request.auth.EmailCertificationRequestDto;
-import com.example.oauthreact.dto.request.auth.IdCheckRequestDto;
-import com.example.oauthreact.dto.request.auth.SignUpRequestDto;
-import com.example.oauthreact.dto.response.auth.CheckCertificationResponseDto;
-import com.example.oauthreact.dto.response.auth.EmailCertificationReponseDto;
-import com.example.oauthreact.dto.response.auth.IdCheckResponseDto;
-import com.example.oauthreact.dto.response.auth.SignupResponseDto;
+import com.example.oauthreact.dto.request.auth.*;
+import com.example.oauthreact.dto.response.auth.*;
 import com.example.oauthreact.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +51,16 @@ public class AuthController {
             @RequestBody @Valid SignUpRequestDto requestbody
             ){
         ResponseEntity<? super SignupResponseDto> response = authService.signup(requestbody);
+        return response;
+    }
+
+
+    //로그인
+    @PostMapping("/sign-in")
+    public ResponseEntity<? super SignInResponseDto> signIn (
+            @RequestBody @Valid SignInRequestDto requestBody
+    ) {
+        ResponseEntity<? super SignInResponseDto> response =authService.signIn(requestBody);
         return response;
     }
 

@@ -1,13 +1,7 @@
 package com.example.oauthreact.service;
 
-import com.example.oauthreact.dto.request.auth.CheckCertificationRequestDto;
-import com.example.oauthreact.dto.request.auth.EmailCertificationRequestDto;
-import com.example.oauthreact.dto.request.auth.IdCheckRequestDto;
-import com.example.oauthreact.dto.request.auth.SignUpRequestDto;
-import com.example.oauthreact.dto.response.auth.CheckCertificationResponseDto;
-import com.example.oauthreact.dto.response.auth.EmailCertificationReponseDto;
-import com.example.oauthreact.dto.response.auth.IdCheckResponseDto;
-import com.example.oauthreact.dto.response.auth.SignupResponseDto;
+import com.example.oauthreact.dto.request.auth.*;
+import com.example.oauthreact.dto.response.auth.*;
 import org.springframework.http.ResponseEntity;
 
 
@@ -24,6 +18,9 @@ public interface AuthService {
 
     //회원가입
     ResponseEntity<? super SignupResponseDto> signup(SignUpRequestDto dto);
+
+    //로그인
+    ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto);
 
 
 }

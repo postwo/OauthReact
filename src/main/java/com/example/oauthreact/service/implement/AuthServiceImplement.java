@@ -1,18 +1,13 @@
 package com.example.oauthreact.service.implement;
 
 import com.example.oauthreact.common.CertificationNumber;
-import com.example.oauthreact.dto.request.auth.CheckCertificationRequestDto;
-import com.example.oauthreact.dto.request.auth.EmailCertificationRequestDto;
-import com.example.oauthreact.dto.request.auth.IdCheckRequestDto;
-import com.example.oauthreact.dto.request.auth.SignUpRequestDto;
+import com.example.oauthreact.dto.request.auth.*;
 import com.example.oauthreact.dto.response.ResponseDto;
-import com.example.oauthreact.dto.response.auth.CheckCertificationResponseDto;
-import com.example.oauthreact.dto.response.auth.EmailCertificationReponseDto;
-import com.example.oauthreact.dto.response.auth.IdCheckResponseDto;
-import com.example.oauthreact.dto.response.auth.SignupResponseDto;
+import com.example.oauthreact.dto.response.auth.*;
 import com.example.oauthreact.entity.CertificationEntity;
 import com.example.oauthreact.entity.UserEntity;
 import com.example.oauthreact.provider.EmailProvider;
+import com.example.oauthreact.provider.JwtProvider;
 import com.example.oauthreact.repository.CertificationRepository;
 import com.example.oauthreact.repository.UserRepository;
 import com.example.oauthreact.service.AuthService;
@@ -32,6 +27,7 @@ public class AuthServiceImplement implements AuthService {
 
     private final CertificationRepository certificationRepository;
 
+    private final JwtProvider jwtProvider;
     private final EmailProvider emailProvider;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -140,6 +136,37 @@ public class AuthServiceImplement implements AuthService {
 
         return SignupResponseDto.success();
     }
+
+    @Override
+    public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
+
+        String token = null;
+
+        try {
+
+            String userId = dto.getId();
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return SignInResponseDto.signInFail();
+
+            String passwrod = dto.getPassword();
+            String encodedPassword = userEntity.getPassword();
+            boolean isMatched = passwordEncoder.matches(passwrod,encodedPassword);
+            if (!isMatched) return SignInResponseDto.signInFail();
+
+            token = jwtProvider.create(userId); //토큰 생성
+
+        }catch (Exception e){
+            e.printStackTrace();
+           return ResponseDto.databaseError();
+        }
+
+        return SignInResponseDto.success(token);
+
+    }
+
+
+    //로그인
+
 
 
 }
