@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -29,6 +30,7 @@ import java.io.IOException;
 public class WebSecurityconfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final DefaultOAuth2UserService defaultOAuth2UserService;
 
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception{
@@ -45,11 +47,16 @@ public class WebSecurityconfig {
                 )
 
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/","/api/v1/auth/**").permitAll()
+                        .requestMatchers("/","/api/v1/auth/**","/oauth2/**").permitAll()
                         .requestMatchers("/api/v1/user/**").hasRole("USER")
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
 //                        .requestMatchers("/api/v1/logispw/**").hasAnyRole("USER","ADMIN")
                         .anyRequest().authenticated()
+                )
+
+                .oauth2Login(oauth2 ->oauth2
+                        .redirectionEndpoint(endpoint-> endpoint.baseUri("/oauth2/callback/*")) //redirect url
+                        .userInfoEndpoint(endpoint -> endpoint.userService(defaultOAuth2UserService))
                 )
 
                 //authorizeHttpRequests 에서 발생한 exception 이발생 한걸 처리

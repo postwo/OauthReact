@@ -47,3 +47,11 @@ npm run start
 
 # 구글 gmail 
 앱 비밀번호 조회해서 들어가기
+
+# ts 에서 주석 달면 에러가 날수도 있다 기억해두기
+
+#  에러
+threw exception with message: Unknown provider ID 'kakao' 이거는 rpovider를 설정안했든가 아니면 들여쓰기를 잘못했을 가능성이 크다 
+
+# oauth 테스트 주소
+http://localhost:4040/oauth2/authorization/{kakao,naver}
